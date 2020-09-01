@@ -1,32 +1,54 @@
-#include "LinkedList.h"
+// Camryn Rogers
+// cpr170030
 
-LinkedList::LinkedList()
-{
-   //ctor
-}
+#include "LinkedList.h"
+#include <iostream>
 
 LinkedList::~LinkedList()
 {
    //deletes linked list
 }
 
-LinkedList :: void print(fstream& file)
+// Prints the linked list recursively
+void LinkedList :: print(DoubleLinkNode* head, fstream& file)
 {
-   if (headptr == nullptr)
+   if (head == tailptr->getNext())
    {
+      //cout << "null" << endl;
       return;
    }
    else
-      file << headptr;
-
-   LL.print(headptr->getNext(), file);
+   {
+      file << head;
+      print(head->getNext(), file);
+   }
 }
 
-LinkedList::LinkedList& operator+=(DoubleLinkNode& newnode)
+// Adds a node to the end of the linked list
+LinkedList& LinkedList :: operator+=(DoubleLinkNode& newnode)
 {
-   tailptr->setNext(&newnode);
-   tailptr->setPrev(tailptr);
-   tailptr = &newnode;
+   //If it's the first one, set head
+      if (headptr == nullptr)
+         {
+            //cout << "true" << endl;
+            headptr = &newnode;
+            headptr->setPrev(nullptr);
+            tailptr = &newnode;
+            //cout << " tail value: " << *tailptr << endl;
+            //cout  << " head value: " << *headptr << endl;
+         }
+   //Else add the node at the end and adjust the tail
+      else
+         {
+            //cout << "false" << endl;
+            tailptr->setNext(&newnode);
+            tailptr = &newnode;
+            tailptr->setPrev(tailptr);
+            tailptr->setNext(nullptr);
+            //cout << "tail value: " << *tailptr << endl;
+            //cout  << "head value: " << *headptr << endl;
+         }
+
    return *this;
 
 }
